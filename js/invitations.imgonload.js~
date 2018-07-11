@@ -1,0 +1,212 @@
+$(document).ready(function () {
+
+    var aspectRatio = new Array(invNotes.length)
+    aspectRatio[0]=4068/989;
+    aspectRatio[1]=1990/1092;
+    aspectRatio[2]=1949/1372;
+    aspectRatio[3]=2013/1266;
+    aspectRatio[4]=2322/1118;
+    var ar4b=2352/1152;
+    aspectRatio[5]=2013/2469;
+    aspectRatio[6]=2042/1588;
+    var ar6b=2050/1596;
+    aspectRatio[7]=2436/2410;
+    aspectRatio[8]=2438/1589;
+    aspectRatio[9]=1639/1187;
+    var ar9b=1623/1164;
+    aspectRatio[10]=4248/1990;
+
+//    $.getScript("globalsGreek.js")  // deleteMe
+    
+    // prevent drag & drop
+    $('td').mousedown(function(){ 
+        return false;
+    });
+
+    // gallery's Thumbnails creation
+    for(note = 0; note < invNotes.length; note++){ 
+        var $this_td = $('td#' + note + 'Inv')
+        //$this_td.append('<a id="'+note+'" href="#"></a></li>')
+        //var $this_a = $('a#' + note)
+
+        if ($this_td.hasClass('card')) {
+            var filename = note + 'a.jpg';
+            var doublediv = ' class="doubleface"';
+        } else {
+            filename = note + '.jpg';
+            var doublediv = ''
+        }
+
+        var addlink = '<div id="' + note + '"' + doublediv + '"><img src = "./invitations/' + filename + '" /></div>'
+        $this_td.append(addlink)
+        $this_td.find('div').addClass('invcontainer');  //for shadow
+        $this_td.find('img').css({
+            'position': 'relative',
+            'z-index':10
+            });
+        $this_td.append('<span class="invLabel">' + invNotes[note] + '</span>')
+    }
+
+    // give me the full <img> to append on the wrapper
+    function imgtag($this_div) {
+
+        if ($this_div.hasClass('doubleface')) {
+            var filename = note + 'a.jpg';
+            var doubleface = true;   // var doubleface for flipping sides!
+        } else {
+            filename = note + '.jpg';
+            var doubleface = false;               
+        }
+        
+        var imgfullsize = '<img id="fullimage" src = "./invitations.normalSize/' + filename + '" />'
+        return imgfullsize  //what about doubleface?
+    } 
+                        
+    //Centering full image                            
+    function centerimg(opened_inv) {
+        var $wrapper = $('div#wrapperInv');
+        var maxw = parseInt($wrapper.css('width'));
+        var maxh = parseInt($wrapper.css('height'));
+    //                    var wid = $image.width();
+    //                    var hei = $image.height();
+        if (aspectRatio[opened_inv] > 1) {
+            var wid = maxw;
+            var hei = parseInt(wid/aspectRatio[opened_inv]);
+        } else {
+            var hei = maxh;
+            var wid = parseInt(hei*aspectRatio[opened_inv]);
+        };
+        
+        imleft = (maxw - wid)/2;
+        imtop = (maxh - hei)/2;
+        $('div#wrapperInv').css({
+            'top': imtop + 'px',
+            'left': imleft + 'px',
+        })
+    } // center image     
+
+
+    // functioning
+    for(i = 0; i < invNotes.length; i++){ 
+        (function(note) {
+            $invitation = $('div#' + note + ' img');
+            // when I click on thumbnail function:
+            $invitation.click(function(e){           
+              
+                var $this_div = $(this).parent();  //div containing thumbnail img
+                var opened_inv = parseInt($this_div.attr('id'));  //id of above inv (also filename except doubleface) same as note
+
+                $('#overlayInv').append('<div id="wrapperInv"></div>'); //creating wrapper of the full image
+                var $wrapper = $('div#wrapperInv');
+           
+                var imgfullsize = imgtag($this_div)
+                $wrapper.append(imgfullsize);
+                
+                var $image = $('div#wrapperInv img');
+                    
+                centerimg(opened_inv) //call to center image
+                
+                //Blackening Overlay
+                var $overlay = $('#overlayInv')
+                $overlay.addClass('overlayed')
+//                    $overlay.css({
+//                        'background':'rgba(0,0,0,0.8)',
+//                        'z-index':20
+//                        })
+
+                //close picture when hit outside  XXX 
+                $image.bind('clickoutside',function(e){    
+                    if (($overlay.is(e.target)) || ($wrapper.is(e.target))){
+                    $overlay.removeClass('overlayed')
+                        $wrapper.remove()
+                	}
+                });       
+
+// Change visible invitation                                
+                function changeinv(action) {
+                
+                    function bringfront(imId) {
+                        
+console.log(action, imId)   
+                        var newimgtag = imgtag(imId);  // l.51
+                        $wrapper.find('img').remove();
+                        $wrapper.append(newimgtag)
+
+                        return imId
+                        
+                    } // bring this in front
+                        
+                    switch (action) {
+                        case 'first':
+                            opened_inv = bringfront(0);
+                        case 'last':
+                            opened_inv = bringfront(invNotes.length-1);
+                        case 'next':
+                            opened_inv = bringfront(opened_inv+1);
+                        case 'prev':
+                            opened_inv = bringfront(opened_inv-1);
+                        case 'flip':
+                            opened_inv = bringfront(opened_inv+'b');
+                        } //switch
+                        
+                    return opened_inv;
+                }//change invitation
+
+                //adding navigation buttons:
+                $overlay.append(addnavigation)   //from Globals                   
+                $('a#firstitem').click(function(e){       
+                    e.preventDefault();
+                    opened_inv = changeinv('first')
+                    });
+                $('a#previtem').click(function(e){       
+                    e.preventDefault();
+                    opened_inv = changeinv('prev')
+                    });
+                $('a#nextitem').click(function(e){
+                    e.preventDefault();
+                    opened_inv = changeinv('next')
+                    });
+                $('a#lastitem').click(function(e){
+                    e.preventDefault();
+                    opened_inv = changeinv('last')
+                    });
+                $('a#zoominitem').click(function(e){       
+                    e.preventDefault();
+                    });
+                $('a#zoomoutitem').click(function(e){       
+                    e.preventDefault();
+                    });  
+                // flip if doubleface    
+                $('img#fullimage').click(function(e){
+                    e.preventDefault();
+//                        opened_inv = changeinv('next')                
+                    });                      
+                
+                
+                    
+//                }) //loading full image
+            
+            })  //if Click on thumbnail
+        }) (i) //for thumbnail i 
+    } //do for all thumbnails
+
+
+
+    //for(note = 0; note < invNotes.length; note++){
+    //    var invID = $('#' + note + 'Inv')
+    //    $(invID).append('<span class="invLabel">' + invNotes[note] + '</span>'); //putting sticker titles
+    //    $(invID).css({'background': 'url("./gallery/thumb.png") no-repeat',
+    //	    'background-size': 'contain'}) //putting galleries thumbs covers
+    //    $(invID).parent().css({'background': 'url("./gallery/thumb_bg_empty.png") no-repeat',
+    //	    'background-size': 'contain'}); //putting galleries thumbs background
+    //}
+                   
+    //build = '';
+    //for (note=0; note<invAmount; note++) {
+    //    build += invNotes[note];
+    //}
+    //$('#invlinks').append(build)
+
+
+
+});

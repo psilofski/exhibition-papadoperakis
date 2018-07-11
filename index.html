@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  <!--To keep ie from quirks!-->
+   <meta charset="utf-8">
+   
+	<meta NAME='AUTHOR' CONTENT="Manolis Stratigis (manstra@gmail.com)">
+	<meta HTTP-EQUIV='CONTENT-TYPE' CONTENT='text/html charset=UTF-8'>
+	<meta HTTP-EQUIV='CONTENT-LANGUAGE' CONTENT='gr'>
+<!--    <script>// var jq171 = jQuery.noConflict(); </script>
+// http://www.jacklmoore.com/notes/jquery-modal-tutorial   -->
+    
+   <title>Thomas Papadoperakis</title>
+<!--   <link rel='stylesheet' type='text/css' href="./css/styleTidy.css" /> -->
+   <link rel='stylesheet' type='text/css' href="./styles.css" />
+   <script src="lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="lib/jquery.ba-outside-events.min.js" type="text/javascript"></script> 
+<script type="text/javascript" src="./lib/jquery-ui-1.9.1.js"></script>
+<!--<script type="text/javascript" src="./js/jquery.animate-enhanced.min.js"></script>-->
+<script type="text/javascript" src="./wow_book/wow_book.min.js"></script>
+<link rel="stylesheet" href="./wow_book/wow_book.css" type="text/css" /> <!-- load after jquery or Trouble! -->
+
+<script src="js/globals.js" type="text/javascript"></script> 
+<script src="js/globalsGreek.js" type="text/javascript"></script>  <!-- Greek language -->
+
+<script src="js/main.js" type="text/javascript"></script>
+
+<SCRIPT language="JavaScript">
+
+var modules = ['0','1','2','3'];    //link buttons or tabs order
+    </SCRIPT>     
+  
+ </head>
+ 
+<body>
+
+<div id="container">
+
+<div id="leftside">
+    <img src="./images/banner_left.jpg" />
+</div>
+
+<div id="rightside">
+    <div id="banner_txt">
+        <img src="" />
+    </div>
+
+<div id="firefoxLogo">
+    <img src="./images/firefox.png" style="vertical-align:middle"/>
+    <span style="font-size: 12px;"> </span>
+</div>
+
+     <div id="langs">
+        <a class="langswap" href="#"></a>
+        <div class="currentLang"></div>
+     </div>
+     
+     <div id="mainbuttons">
+     
+         <div id="homebuttons">
+             <ul>
+                 <li class="buttons" id="0btn"><a id="0Link" href="#"></a></li>
+                 <li class="buttons" id="1btn"><a id="1Link" href="#"></a></li>
+                 <li class="buttons" id="2btn"><a id="2Link" href="#"></a></li>
+                 <li class="buttons" id="3btn"><a id="3Link" href="#"></a></li>
+             </ul>
+         </div>
+         
+         <div id="contributors_link" class="buttonup">
+            <a href="#"></a>
+         </div>
+         <div id="contributors">
+            <p id="contributors_list"></p>
+            <div id="closesymbol"></div>
+         </div> 
+     
+     </div>
+ </div>
+ 
+<div id="Overlay" class="modalDialog">
+    <div class="modalWindow">
+        <div id="nav_menu">
+            <ul class="tabs">
+                <li><a class="closedTab" id="0Tab" href="#"></a></li>
+                <li><a class="closedTab" id="1Tab" href="#"></a></li>
+                <li><a class="closedTab" id="2Tab" href="#"></a></li>
+                <li><a class="closedTab" id="3Tab" href="#"></a></li>
+            </ul>
+        </div>
+        <div id="inlangs"><a class="langswap" href="#"></a></div>
+        <a href="goto#close" title="Close" class="close">X</a>
+        <a href="#" title="CloseIn" class="closeIn">X</a>  
+    </div> 
+</div>   
+       
+</div>       
+ </body>
+ </html>
